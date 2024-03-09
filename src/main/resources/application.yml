@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: mall-tiny
+  banner:
+    location: classpath:banner.txt
   profiles:
     active: dev
 #  main:
