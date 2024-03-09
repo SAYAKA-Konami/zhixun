@@ -11,21 +11,20 @@ import com.macro.mall.tiny.modules.ums.service.UmsAdminCacheService;
 import com.macro.mall.tiny.modules.ums.service.UmsAdminRoleRelationService;
 import com.macro.mall.tiny.modules.ums.service.UmsAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-/**
- * 后台用户缓存管理Service实现类
- * Created by macro on 2020/3/13.
- */
-@Service(value = "UmsAdminRedisCache")
-public class UmsAdminCacheServiceImpl implements UmsAdminCacheService {
+@Service(value = "UmsAdminLocalCache")
+@Primary
+public class UmsAdminLocalCacheServiceImpl implements UmsAdminCacheService {
     @Autowired
     private UmsAdminService adminService;
     @Autowired
+    @Qualifier("LocalCacheService")
     private RedisService redisService;
     @Autowired
     private UmsAdminMapper adminMapper;

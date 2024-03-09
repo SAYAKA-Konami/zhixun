@@ -67,6 +67,10 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
         <!--SpringDoc依赖配置-->
         <dependency>
             <groupId>org.springdoc</groupId>
