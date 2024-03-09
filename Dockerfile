@@ -1,10 +1,15 @@
 # 该镜像需要依赖的基础镜像
 FROM openjdk:17
 # 将当前目录下的jar包复制到docker容器的/目录下
-ADD ./mall-tiny-1.0.0-SNAPSHOT.jar /mall-tiny-1.0.0-SNAPSHOT.jar
+ADD ./bj-zhixun-1.0.0-SNAPSHOT.jar /bj-zhixun.jar
 # 声明服务运行在8080端口
-EXPOSE 8080
+EXPOSE 8090
+
+# 设置日志路径
+ENV LOG_PATH /var/log
+
+ENV JAVA_OPTS="-XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions -XX:-OmitStackTraceInFastThrow -Xlog:gc*=debug:file=${LOG_PATH}/gc%t.log:utctime,level,tags:filecount=50,filesize=100M -Xlog:jit+compilation=info:file=${LOG_PATH}/jit_compile%t.log:utctime,level,tags:filecount=10,filesize=10M -Xlog:safepoint=debug:file=${LOG_PATH}/safepoint%t.log:utctime,level,tags:filecount=10,filesize=10M -Xlog:async -Dfile.encoding=UTF-8 -Djava.security.egd=file:/dev/./urandom -Dnetworkaddress.cache.ttl=10 -XX:MaxRAMPercentage=45 -XX:InitialRAMPercentage=45 -XX:+AlwaysPreTouch -Xss512k -XX:MaxDirectMemorySize=1024m -XX:MaxMetaspaceSize=384m -XX:ReservedCodeCacheSize=256m -XX:+DisableExplicitGC -XX:MaxGCPauseMillis=100 -XX:-UseBiasedLocking -XX:GuaranteedSafepointInterval=0 -XX:+UseCountedLoopSafepoints -XX:+SafepointTimeout -XX:SafepointTimeoutDelay=1000 -XX:StartFlightRecording=disk=true,maxsize=4096m,maxage=3d -XX:FlightRecorderOptions=maxchunksize=128m --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.math=ALL-UNNAMED --add-opens java.base/java.net=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/java.security=ALL-UNNAMED --add-opens java.base/java.text=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/jdk.internal.access=ALL-UNNAMED --add-opens java.base/jdk.internal.misc=ALL-UNNAMED"
 # 指定docker容器启动时运行jar包
-ENTRYPOINT ["java", "-jar","/mall-tiny-1.0.0-SNAPSHOT.jar"]
+ENTRYPOINT ["java $JAVA_OPTS", "-jar","/bj-zhixun.jar"]
 # 指定维护者的名字
-MAINTAINER macrozheng
+MAINTAINER wn
