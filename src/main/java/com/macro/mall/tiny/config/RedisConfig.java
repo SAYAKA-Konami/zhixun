@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Redis配置类
- * Created by macro on 2020/3/2.
+ * @apiNote 如果要开启redis链接的话可以将开启以下注解
  */
-@EnableCaching
-@Configuration
+//@EnableCaching
+//@Configuration
 public class RedisConfig extends BaseRedisConfig {
 
 }

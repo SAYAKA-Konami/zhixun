@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.macro.mall.tiny.common.service.RedisService;
 import com.macro.mall.tiny.common.service.impl.RedisServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
@@ -23,6 +24,7 @@ import java.time.Duration;
  * Redis基础配置
  * Created by macro on 2020/6/19.
  */
+@Slf4j
 public class BaseRedisConfig {
 
     @Bean
