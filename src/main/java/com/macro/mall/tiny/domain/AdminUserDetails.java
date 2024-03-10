@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
  * Created by macro on 2018/4/26.
  */
 public class AdminUserDetails implements UserDetails {
-    private UmsAdmin umsAdmin;
-    private List<UmsResource> resourceList;
+    private final UmsAdmin umsAdmin;
+    private final List<UmsResource> resourceList;
     public AdminUserDetails(UmsAdmin umsAdmin, List<UmsResource> resourceList) {
         this.umsAdmin = umsAdmin;
         this.resourceList = resourceList;
