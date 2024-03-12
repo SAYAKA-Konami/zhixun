@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2024-03-13
  */
 @RestController
-@RequestMapping("/task/task")
+@RequestMapping("/admin/task")
 public class TaskController {
 
 }
