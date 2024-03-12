@@ -1,4 +1,4 @@
-package com.macro.mall.tiny.modules.customer.model;
+package com.macro.mall.tiny.modules.task.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Schema(name = "Customer", description = "客户信息")
+@Schema(name = "Customer", description = "用户表")
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -1,8 +1,8 @@
-package com.macro.mall.tiny.modules.customer.service.impl;
+package com.macro.mall.tiny.modules.task.service.impl;
 
-import com.macro.mall.tiny.modules.customer.model.Customer;
-import com.macro.mall.tiny.modules.customer.mapper.CustomerMapper;
-import com.macro.mall.tiny.modules.customer.service.CustomerService;
+import com.macro.mall.tiny.modules.task.model.Customer;
+import com.macro.mall.tiny.modules.task.mapper.CustomerMapper;
+import com.macro.mall.tiny.modules.task.service.CustomerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author macro
- * @since 2024-03-12
+ * @since 2024-03-13
  */
 @Service
 public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> implements CustomerService {

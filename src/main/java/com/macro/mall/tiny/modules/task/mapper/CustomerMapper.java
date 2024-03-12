@@ -1,6 +1,6 @@
-package com.macro.mall.tiny.modules.customer.mapper;
+package com.macro.mall.tiny.modules.task.mapper;
 
-import com.macro.mall.tiny.modules.customer.model.Customer;
+import com.macro.mall.tiny.modules.task.model.Customer;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author macro
- * @since 2024-03-12
+ * @since 2024-03-13
  */
 public interface CustomerMapper extends BaseMapper<Customer> {
 

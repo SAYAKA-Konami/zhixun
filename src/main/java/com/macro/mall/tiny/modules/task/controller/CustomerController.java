@@ -1,4 +1,4 @@
-package com.macro.mall.tiny.modules.customer.controller;
+package com.macro.mall.tiny.modules.task.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author macro
- * @since 2024-03-12
+ * @since 2024-03-13
  */
 @RestController
-@RequestMapping("/customer/customer")
+@RequestMapping("/task/customer")
 public class CustomerController {
 
 }

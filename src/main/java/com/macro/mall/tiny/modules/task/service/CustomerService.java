@@ -1,6 +1,6 @@
-package com.macro.mall.tiny.modules.customer.service;
+package com.macro.mall.tiny.modules.task.service;
 
-import com.macro.mall.tiny.modules.customer.model.Customer;
+import com.macro.mall.tiny.modules.task.model.Customer;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author macro
- * @since 2024-03-12
+ * @since 2024-03-13
  */
 public interface CustomerService extends IService<Customer> {
 
