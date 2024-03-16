@@ -25,9 +25,6 @@ public class CustomerDto {
     @Schema(description = "是原有系统上的“运营商”一栏")
     private String source;
     @NotNull
-    @Schema(description = "记录是谁导入的")
-    private Long importedBy;
-    @NotNull
     @Schema(description = "可能的归属有：客户公海、单个客服")
     private Long belong;
     @NotNull

@@ -85,7 +85,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper,UmsAdmin> im
         QueryWrapper<UmsAdmin> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(UmsAdmin::getUsername,umsAdmin.getUsername());
         List<UmsAdmin> umsAdminList = list(wrapper);
-        if (umsAdminList.size() > 0) {
+        if (!umsAdminList.isEmpty()) {
             return null;
         }
         //将密码进行加密操作

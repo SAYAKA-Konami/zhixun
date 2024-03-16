@@ -28,6 +28,11 @@ public class CustomerDetails implements ReadListener<CustomerDto> {
      */
     private final CustomerDTOMapper mapperStruct;
 
+    public CustomerDetails(CustomerService service, CustomerDTOMapper mapperStruct) {
+        this.service = service;
+        this.mapperStruct = mapperStruct;
+    }
+
     /**
      * 每隔5条存储数据库，实际使用中可以100条，然后清理list ，方便内存回收
      */
@@ -36,25 +41,21 @@ public class CustomerDetails implements ReadListener<CustomerDto> {
      * 缓存的数据
      */
     private List<Customer> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
+
     /**
      * 解析失败的数据
      */
     @Getter
     private List<CustomerDto> failedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
-    public CustomerDetails(CustomerService service, CustomerDTOMapper mapperStruct) {
-        this.service = service;
-        this.mapperStruct = mapperStruct;
-    }
-
-    public Customer getCustomer(CustomerDto customerDto) {
+    public Customer convertToCustomer(CustomerDto customerDto) {
         return mapperStruct.customerDtoToCustomer(customerDto);
     }
 
     @Override
     public void invoke(CustomerDto data, AnalysisContext analysisContext) {
         log.debug("解析到一条数据:{}", JSON.toJSONString(data));
-        Customer customer = getCustomer(data);
+        Customer customer = convertToCustomer(data);
         cachedDataList.add(customer);
         // 达到BATCH_COUNT了，需要去存储一次数据库，防止数据几万条数据在内存，容易OOM
         if (cachedDataList.size() >= BATCH_COUNT) {

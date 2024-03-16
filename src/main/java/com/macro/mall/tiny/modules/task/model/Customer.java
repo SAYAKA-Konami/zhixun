@@ -8,10 +8,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-
+/**
+ * <p>
+ * 
+ * </p>
+ *
+ * @author macro
+ * @since 2024-03-16
+ */
 @Getter
 @Setter
-@Schema(name = "Customer", description = "用户表")
+@Schema(name = "Customer", description = "")
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -31,7 +38,7 @@ public class Customer implements Serializable {
     private String source;
 
     @Schema(description = "记录是谁导入的")
-    private Long importedBy;
+    private String importedBy;
 
     @Schema(description = "可能的归属有：客户公海、单个客服")
     private Long belong;

@@ -49,7 +49,7 @@ public class UmsAdminController {
     public CommonResult<UmsAdmin> register(@Validated @RequestBody UmsAdminParam umsAdminParam) {
         UmsAdmin umsAdmin = adminService.register(umsAdminParam);
         if (umsAdmin == null) {
-            return CommonResult.failed();
+            return CommonResult.failed("有同名的用户，请添加后缀。如：张三.1");
         }
         return CommonResult.success(umsAdmin);
     }
