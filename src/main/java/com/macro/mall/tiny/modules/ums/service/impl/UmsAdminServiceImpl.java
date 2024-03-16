@@ -162,7 +162,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper,UmsAdmin> im
             lambda.or().like(UmsAdmin::getUsername,keyword);
         }
         Page<UmsAdmin> result = page(page, wrapper);
-        List<UmsUserVo> list = result.getRecords().stream().map(UmsVoMapper.INSTANCE::umsAdminParamToUmsUserVo).toList();
+        List<UmsUserVo> list = result.getRecords().stream().map(UmsVoMapper.INSTANCE::umsAdminToUmsUserVo).toList();
         return list;
     }
 

@@ -9,5 +9,5 @@ import org.mapstruct.factory.Mappers;
 public interface UmsVoMapper {
     UmsVoMapper INSTANCE = Mappers.getMapper(UmsVoMapper.class);
 
-    UmsUserVo umsAdminParamToUmsUserVo(UmsAdmin umsAdmin);
+    UmsUserVo umsAdminToUmsUserVo(UmsAdmin umsAdmin);
 }

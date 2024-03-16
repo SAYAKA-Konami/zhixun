@@ -5,6 +5,8 @@ package com.macro.mall.tiny.common.api;
  * Created by macro on 2019/4/19.
  */
 public class CommonResult<T> {
+
+    public final static String SERVER_ERROR = "服务器开小差了 T ^ T 请再试一次！";
     private long code;
     private String message;
     private T data;
@@ -52,6 +54,15 @@ public class CommonResult<T> {
      */
     public static <T> CommonResult<T> failed(IErrorCode errorCode,String message) {
         return new CommonResult<T>(errorCode.getCode(), message, null);
+    }
+
+    /**
+     * 失败返回结果
+     * @param errorCode 错误码
+     * @param message 错误信息
+     */
+    public static <T> CommonResult<T> failed(IErrorCode errorCode,String message, T t) {
+        return new CommonResult<T>(errorCode.getCode(), message, t);
     }
 
     /**
