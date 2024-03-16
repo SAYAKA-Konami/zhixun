@@ -61,6 +61,8 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper,UmsAdmin> im
     private UmsRoleMapper roleMapper;
     @Autowired
     private UmsResourceMapper resourceMapper;
+    @Autowired
+    private UmsAdminMapper umsAdminMapper;
 
     @Override
     public UmsAdmin getAdminByUsername(String username) {
@@ -154,16 +156,9 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper,UmsAdmin> im
 
     @Override
     public List<UmsUserVo> list(String keyword, Integer pageSize, Integer pageNum) {
-        Page<UmsAdmin> page = new Page<>(pageNum,pageSize);
-        QueryWrapper<UmsAdmin> wrapper = new QueryWrapper<>();
-        LambdaQueryWrapper<UmsAdmin> lambda = wrapper.lambda();
-        if(StrUtil.isNotEmpty(keyword)){
-            lambda.like(UmsAdmin::getUsername,keyword);
-            lambda.or().like(UmsAdmin::getUsername,keyword);
-        }
-        Page<UmsAdmin> result = page(page, wrapper);
-        List<UmsUserVo> list = result.getRecords().stream().map(UmsVoMapper.INSTANCE::umsAdminToUmsUserVo).toList();
-        return list;
+        int offsetSize = (pageNum - 1) * pageSize;
+        List<UmsUserVo> allUser = umsAdminMapper.getAllUser(keyword, pageSize, offsetSize);
+        return allUser;
     }
 
     @Override

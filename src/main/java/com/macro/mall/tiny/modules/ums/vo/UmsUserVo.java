@@ -20,7 +20,7 @@ public class UmsUserVo {
     @Schema(title = "邮箱")
     private String email;
 
-    @Schema(title = "昵称")
+    @Schema(title = "电话号码")
     private String phone;
 
     @Schema(title = "备注信息")
@@ -31,5 +31,11 @@ public class UmsUserVo {
 
     @Schema(title = "帐号启用状态：0->禁用；1->启用")
     private Integer status;
+
+    @Schema(title = "权限")
+    private String roleName;
+
+    @Schema(title = "所属组")
+    private String groupName;
 
 }

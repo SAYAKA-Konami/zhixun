@@ -2,6 +2,7 @@ package com.macro.mall.tiny.modules.ums.mapper;
 
 import com.macro.mall.tiny.modules.ums.model.UmsAdmin;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.macro.mall.tiny.modules.ums.vo.UmsUserVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -20,5 +21,9 @@ public interface UmsAdminMapper extends BaseMapper<UmsAdmin> {
      * 获取资源相关用户ID列表
      */
     List<Long> getAdminIdList(@Param("resourceId") Long resourceId);
+
+    List<UmsUserVo> getAllUser(@Param("username") String username,
+                               @Param("pageSize") Integer pageSize,
+                                 @Param("offsetSize") Integer offsetSize);
 
 }
