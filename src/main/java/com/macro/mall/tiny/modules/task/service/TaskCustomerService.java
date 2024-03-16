@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.macro.mall.tiny.modules.task.model.TaskCustomer;
 import com.macro.mall.tiny.modules.task.mapper.TaskCustomerMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,5 +17,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TaskCustomerService extends ServiceImpl<TaskCustomerMapper, TaskCustomer> implements IService<TaskCustomer> {
+
+    @Autowired
+    private TaskCustomerMapper mapper;
 
 }

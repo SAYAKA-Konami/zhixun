@@ -4,8 +4,10 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.read.listener.ReadListener;
 import com.alibaba.excel.util.ListUtils;
 import com.alibaba.fastjson2.JSON;
+import com.macro.mall.tiny.common.exception.ApiException;
 import com.macro.mall.tiny.modules.task.dto.CustomerDto;
 import com.macro.mall.tiny.modules.task.dto.mapper.CustomerDTOMapper;
+import com.macro.mall.tiny.modules.task.mapper.CustomerMapper;
 import com.macro.mall.tiny.modules.task.model.Customer;
 import com.macro.mall.tiny.modules.task.service.CustomerService;
 import lombok.Getter;
@@ -22,15 +24,22 @@ public class CustomerDetails implements ReadListener<CustomerDto> {
     /**
      * 理论上来说这里应该是一个mapper。但是mybatis-plus的mapper不包含批量插入方法。
      */
-    private final CustomerService service;
+    private final CustomerMapper mapper;
     /**
      *  负责VO <-- PO --> DTO
      */
     private final CustomerDTOMapper mapperStruct;
 
-    public CustomerDetails(CustomerService service, CustomerDTOMapper mapperStruct) {
-        this.service = service;
+    /**
+     *  用于后续查询顾客在数据库中的ID
+     */
+    private final List<String> phoneList;
+
+
+    public CustomerDetails(CustomerMapper mapper, CustomerDTOMapper mapperStruct, List<String> phoneList) {
+        this.mapper = mapper;
         this.mapperStruct = mapperStruct;
+        this.phoneList = phoneList;
     }
 
     /**
@@ -57,9 +66,13 @@ public class CustomerDetails implements ReadListener<CustomerDto> {
         log.debug("解析到一条数据:{}", JSON.toJSONString(data));
         Customer customer = convertToCustomer(data);
         cachedDataList.add(customer);
+        phoneList.add(customer.getPhone());
         // 达到BATCH_COUNT了，需要去存储一次数据库，防止数据几万条数据在内存，容易OOM
         if (cachedDataList.size() >= BATCH_COUNT) {
-            service.saveBatch(cachedDataList);
+            int effect = mapper.insertBatch(cachedDataList);
+            if (effect == 0) {
+                throw new ApiException("回滚事务");
+            }
             // 存储完成清理 list
             cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
         }
@@ -68,13 +81,17 @@ public class CustomerDetails implements ReadListener<CustomerDto> {
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
         // 这里也要保存数据，确保最后遗留的数据也存储到数据库
-        service.saveBatch(cachedDataList);
+        mapper.insertBatch(cachedDataList);
         log.info("所有数据解析完成！");
     }
 
     @Override
-    public void onException(Exception exception, AnalysisContext context) {
+    public void onException(Exception exception, AnalysisContext context) throws Exception {
         log.error("解析失败。Error:{}", exception.getMessage());
+        if (exception instanceof ApiException){
+            // 根据注释，这里抛出异常会终止解析。
+            throw new Exception();
+        }
         Object failedDto = context.getCustom();
         if (failedDto instanceof CustomerDto) {
             failedDataList.add((CustomerDto) failedDto);

@@ -17,4 +17,19 @@
         <result column="update_time" property="updateTime" />
     </resultMap>
 
+    <insert id="insertBatch">
+        insert into customer (name, phone, city, province, source, imported_by, belong, category, create_time, update_time)
+        values
+        <foreach collection="list" item="customers" index="index" separator=",">
+            (#{item.name}, #{item.phone}, #{item.city}, #{item.province}, #{item.source}, #{item.importedBy}, #{item.belong}, #{item.category}, #{item.createTime}, #{item.updateTime})
+        </foreach>
+    </insert>
+
+    <select id="getIdsByPhoneList" resultType="java.lang.Long">
+        select id from customer where phone in
+        <foreach collection="list" item="phoneList" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
 </mapper>

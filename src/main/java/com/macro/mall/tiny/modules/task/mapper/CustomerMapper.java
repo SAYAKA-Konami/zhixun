@@ -2,6 +2,11 @@ package com.macro.mall.tiny.modules.task.mapper;
 
 import com.macro.mall.tiny.modules.task.model.Customer;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +18,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface CustomerMapper extends BaseMapper<Customer> {
 
+    @Transactional
+    int insertBatch(@Param("customers") List<Customer> customers);
+
+
+    List<Long> getIdsByPhoneList(List<String> phoneList);
 }

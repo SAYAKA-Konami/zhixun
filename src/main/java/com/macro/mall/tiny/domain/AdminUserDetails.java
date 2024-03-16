@@ -2,6 +2,7 @@ package com.macro.mall.tiny.domain;
 
 import com.macro.mall.tiny.modules.ums.model.UmsAdmin;
 import com.macro.mall.tiny.modules.ums.model.UmsResource;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
  * Created by macro on 2018/4/26.
  */
 public class AdminUserDetails implements UserDetails {
+    public final static long ILLEGAL_ID = -1L;
     private final UmsAdmin umsAdmin;
     private final List<UmsResource> resourceList;
     public AdminUserDetails(UmsAdmin umsAdmin, List<UmsResource> resourceList) {
@@ -27,7 +29,11 @@ public class AdminUserDetails implements UserDetails {
         //返回当前用户的角色
         return resourceList.stream()
                 .map(role ->new SimpleGrantedAuthority(role.getId()+":"+role.getName()))
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    public long getId(){
+        return umsAdmin.getId();
     }
 
     @Override
