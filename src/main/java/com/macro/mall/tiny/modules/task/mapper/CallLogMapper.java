@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author macro
- * @since 2024-03-13
+ * @since 2024-03-16
  */
 public interface CallLogMapper extends BaseMapper<CallLog> {
 
