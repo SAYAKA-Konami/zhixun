@@ -18,6 +18,8 @@ import com.macro.mall.tiny.modules.ums.model.*;
 import com.macro.mall.tiny.modules.ums.service.UmsAdminCacheService;
 import com.macro.mall.tiny.modules.ums.service.UmsAdminRoleRelationService;
 import com.macro.mall.tiny.modules.ums.service.UmsAdminService;
+import com.macro.mall.tiny.modules.ums.vo.UmsUserVo;
+import com.macro.mall.tiny.modules.ums.vo.mapper.UmsVoMapper;
 import com.macro.mall.tiny.security.util.JwtTokenUtil;
 import com.macro.mall.tiny.security.util.SpringUtil;
 import org.slf4j.Logger;
@@ -151,15 +153,17 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper,UmsAdmin> im
     }
 
     @Override
-    public Page<UmsAdmin> list(String keyword, Integer pageSize, Integer pageNum) {
+    public List<UmsUserVo> list(String keyword, Integer pageSize, Integer pageNum) {
         Page<UmsAdmin> page = new Page<>(pageNum,pageSize);
         QueryWrapper<UmsAdmin> wrapper = new QueryWrapper<>();
         LambdaQueryWrapper<UmsAdmin> lambda = wrapper.lambda();
         if(StrUtil.isNotEmpty(keyword)){
             lambda.like(UmsAdmin::getUsername,keyword);
-            lambda.or().like(UmsAdmin::getNickName,keyword);
+            lambda.or().like(UmsAdmin::getUsername,keyword);
         }
-        return page(page,wrapper);
+        Page<UmsAdmin> result = page(page, wrapper);
+        List<UmsUserVo> list = result.getRecords().stream().map(UmsVoMapper.INSTANCE::umsAdminParamToUmsUserVo).toList();
+        return list;
     }
 
     @Override

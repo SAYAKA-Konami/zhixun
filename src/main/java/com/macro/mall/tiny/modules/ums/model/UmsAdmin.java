@@ -38,8 +38,8 @@ public class UmsAdmin implements Serializable {
     @Schema(title = "邮箱")
     private String email;
 
-    @Schema(title = "昵称")
-    private String nickName;
+    @Schema(title = "手机号")
+    private String phone;
 
     @Schema(title = "备注信息")
     private String note;

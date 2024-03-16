@@ -7,6 +7,7 @@ import com.macro.mall.tiny.modules.ums.dto.UpdateAdminPasswordParam;
 import com.macro.mall.tiny.modules.ums.model.UmsAdmin;
 import com.macro.mall.tiny.modules.ums.model.UmsResource;
 import com.macro.mall.tiny.modules.ums.model.UmsRole;
+import com.macro.mall.tiny.modules.ums.vo.UmsUserVo;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +45,7 @@ public interface UmsAdminService extends IService<UmsAdmin> {
     /**
      * 根据用户名或昵称分页查询用户
      */
-    Page<UmsAdmin> list(String keyword, Integer pageSize, Integer pageNum);
+    List<UmsUserVo> list(String keyword, Integer pageSize, Integer pageNum);
 
     /**
      * 修改指定用户信息

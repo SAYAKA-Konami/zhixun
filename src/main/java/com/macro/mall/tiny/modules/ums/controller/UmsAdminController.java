@@ -11,6 +11,7 @@ import com.macro.mall.tiny.modules.ums.model.UmsAdmin;
 import com.macro.mall.tiny.modules.ums.model.UmsRole;
 import com.macro.mall.tiny.modules.ums.service.UmsAdminService;
 import com.macro.mall.tiny.modules.ums.service.UmsRoleService;
+import com.macro.mall.tiny.modules.ums.vo.UmsUserVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,11 +115,12 @@ public class UmsAdminController {
     @Operation(summary ="根据用户名或姓名分页获取用户列表")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<CommonPage<UmsAdmin>> list(@RequestParam(value = "keyword", required = false) String keyword,
-                                                   @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
-                                                   @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        Page<UmsAdmin> adminList = adminService.list(keyword, pageSize, pageNum);
-        return CommonResult.success(CommonPage.restPage(adminList));
+    public CommonResult<CommonPage<UmsUserVo>> list(@RequestParam(value = "keyword", required = false) String keyword,
+                                                    @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                                    @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+        var adminList = adminService.list(keyword, pageSize, pageNum);
+        CommonPage<UmsUserVo> build = CommonPage.build(adminList, pageNum, pageSize);
+        return CommonResult.success(build);
     }
 
     @Operation(summary = "获取指定用户信息")

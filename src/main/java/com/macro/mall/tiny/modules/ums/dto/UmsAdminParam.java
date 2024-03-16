@@ -1,6 +1,7 @@
 package com.macro.mall.tiny.modules.ums.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +27,8 @@ public class UmsAdminParam {
     @Schema(title = "邮箱")
     private String email;
     @Schema(title = "用户昵称")
-    private String nickName;
+    @Size(min = 11, max = 11, message = "手机号码长度不正确")
+    private String phone;
     @Schema(title = "备注")
     private String note;
 }
