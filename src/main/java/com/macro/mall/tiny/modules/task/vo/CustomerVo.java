@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode(of = {"name", "phone"})
 public class CustomerVo {
+    @ExcelProperty("任务名称")
+    private String TaskName;
     @ExcelProperty("姓名")
     private String name;
     @ExcelProperty("手机号")

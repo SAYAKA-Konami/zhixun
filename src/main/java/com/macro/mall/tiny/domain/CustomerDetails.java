@@ -5,15 +5,18 @@ import com.alibaba.excel.read.listener.ReadListener;
 import com.alibaba.excel.util.ListUtils;
 import com.alibaba.fastjson2.JSON;
 import com.macro.mall.tiny.modules.task.dto.CustomerDto;
-import com.macro.mall.tiny.modules.task.dto.mapper.CustomerMapperStruct;
-import com.macro.mall.tiny.modules.task.mapper.CustomerMapper;
+import com.macro.mall.tiny.modules.task.dto.mapper.CustomerDTOMapper;
 import com.macro.mall.tiny.modules.task.model.Customer;
 import com.macro.mall.tiny.modules.task.service.CustomerService;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 
 import java.util.List;
-
+/**
+ * @apiNote 处理excel导入的数据
+ * @author wu nan
+ * @since  2024/3/16
+ **/
 @Slf4j
 public class CustomerDetails implements ReadListener<CustomerDto> {
     /**
@@ -23,7 +26,7 @@ public class CustomerDetails implements ReadListener<CustomerDto> {
     /**
      *  负责VO <-- PO --> DTO
      */
-    private final CustomerMapperStruct mapperStruct;
+    private final CustomerDTOMapper mapperStruct;
 
     /**
      * 每隔5条存储数据库，实际使用中可以100条，然后清理list ，方便内存回收
@@ -33,22 +36,25 @@ public class CustomerDetails implements ReadListener<CustomerDto> {
      * 缓存的数据
      */
     private List<Customer> cachedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
+    /**
+     * 解析失败的数据
+     */
+    @Getter
+    private List<CustomerDto> failedDataList = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
-    public CustomerDetails(CustomerService service, CustomerMapperStruct mapperStruct) {
+    public CustomerDetails(CustomerService service, CustomerDTOMapper mapperStruct) {
         this.service = service;
         this.mapperStruct = mapperStruct;
     }
 
     public Customer getCustomer(CustomerDto customerDto) {
-        Customer customer = new Customer();
-        BeanUtils.copyProperties(customerDto, customer);
-        return customer;
+        return mapperStruct.customerDtoToCustomer(customerDto);
     }
 
     @Override
     public void invoke(CustomerDto data, AnalysisContext analysisContext) {
-        log.info("解析到一条数据:{}", JSON.toJSONString(data));
-        Customer customer = mapperStruct.customerDtoToCustomer(data);
+        log.debug("解析到一条数据:{}", JSON.toJSONString(data));
+        Customer customer = getCustomer(data);
         cachedDataList.add(customer);
         // 达到BATCH_COUNT了，需要去存储一次数据库，防止数据几万条数据在内存，容易OOM
         if (cachedDataList.size() >= BATCH_COUNT) {
@@ -60,6 +66,17 @@ public class CustomerDetails implements ReadListener<CustomerDto> {
 
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
+        // 这里也要保存数据，确保最后遗留的数据也存储到数据库
+        service.saveBatch(cachedDataList);
+        log.info("所有数据解析完成！");
+    }
 
+    @Override
+    public void onException(Exception exception, AnalysisContext context) {
+        log.error("解析失败。Error:{}", exception.getMessage());
+        Object failedDto = context.getCustom();
+        if (failedDto instanceof CustomerDto) {
+            failedDataList.add((CustomerDto) failedDto);
+        }
     }
 }

@@ -22,7 +22,6 @@ public class CustomerDto {
     private String city;
     @Schema(description = "用户省份")
     private String province;
-
     @Schema(description = "是原有系统上的“运营商”一栏")
     private String source;
     @NotNull
