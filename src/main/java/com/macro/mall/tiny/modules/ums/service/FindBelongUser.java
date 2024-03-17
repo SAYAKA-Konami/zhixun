@@ -10,7 +10,7 @@ import java.util.List;
 public interface FindBelongUser {
     /**
      * @apiNote 查找该集合下的所有用户
-     * @param id 集合id
+     * @param userId 集合id
      * @return 用户的ID集合
      */
     default List<String> findBelongUserName(Long userId){

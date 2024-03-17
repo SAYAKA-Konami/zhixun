@@ -9,20 +9,19 @@ import com.macro.mall.tiny.modules.task.dto.ExportDto;
 import com.macro.mall.tiny.modules.task.service.CustomerService;
 import com.macro.mall.tiny.modules.task.vo.CustomerVo;
 import com.macro.mall.tiny.modules.task.vo.TaskVo;
-import com.macro.mall.tiny.modules.ums.service.UmsAdminService;
-import com.macro.mall.tiny.security.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>

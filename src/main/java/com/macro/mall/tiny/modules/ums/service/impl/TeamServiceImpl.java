@@ -1,13 +1,12 @@
 package com.macro.mall.tiny.modules.ums.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.macro.mall.tiny.modules.ums.mapper.TeamMapper;
 import com.macro.mall.tiny.modules.ums.model.Group;
 import com.macro.mall.tiny.modules.ums.model.Team;
-import com.macro.mall.tiny.modules.ums.mapper.TeamMapper;
 import com.macro.mall.tiny.modules.ums.service.TeamService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

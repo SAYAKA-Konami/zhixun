@@ -2,7 +2,6 @@ package com.macro.mall.tiny;
 
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.macro.mall.tiny.modules.task.dto.CustomerDto;
 import com.macro.mall.tiny.modules.task.vo.CustomerVo;
 import org.junit.jupiter.api.Test;
