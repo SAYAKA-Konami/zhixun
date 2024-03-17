@@ -32,4 +32,10 @@
         </foreach>
     </select>
 
+    <select id = "getCustomersByUserID" resultMap="BaseResultMap">
+
+    </select>
+
+
+
 </mapper>

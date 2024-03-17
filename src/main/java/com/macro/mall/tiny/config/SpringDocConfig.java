@@ -45,4 +45,13 @@ public class SpringDocConfig {
                 .packagesToScan("com.macro.mall.tiny.modules.ums.controller")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi taskApi() {
+        return GroupedOpenApi.builder()
+                .group("task")
+                .packagesToScan("com.macro.mall.tiny.modules.task.controller")
+                .build();
+    }
+
 }
