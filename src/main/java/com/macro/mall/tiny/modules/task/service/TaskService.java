@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.macro.mall.tiny.domain.AdminUserDetails;
 import com.macro.mall.tiny.domain.TaskDetails;
+import com.macro.mall.tiny.modules.task.mapper.TaskCustomerMapper;
 import com.macro.mall.tiny.modules.task.mapper.TaskMapper;
 import com.macro.mall.tiny.modules.task.model.Task;
 import com.macro.mall.tiny.modules.task.model.TaskCustomer;

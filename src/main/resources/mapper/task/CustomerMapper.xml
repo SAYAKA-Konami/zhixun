@@ -23,6 +23,7 @@
         <foreach collection="customers" item="item" index="index" separator=",">
             (#{item.name}, #{item.phone}, #{item.city}, #{item.province}, #{item.source}, #{item.importedBy}, #{item.belong}, #{item.category}, #{item.createTime}, #{item.updateTime})
         </foreach>
+        on duplicate key update phone = values(phone)
     </insert>
 
     <select id="getIdsByPhoneList" resultType="java.lang.Long">
@@ -46,7 +47,7 @@
                 </foreach>
             </if>
         </where>
-        limit #{pageSize}, #{offsetSize}
+        limit #{pageSize} offset #{offsetSize}
     </select>
 
 

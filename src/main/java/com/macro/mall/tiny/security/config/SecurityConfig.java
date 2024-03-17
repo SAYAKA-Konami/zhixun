@@ -14,6 +14,10 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 
 /**
@@ -37,9 +41,15 @@ public class SecurityConfig {
     private DynamicAuthorizationManager dynamicAuthorizationManager;
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+    MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
+        return new MvcRequestMatcher.Builder(introspector);
+    }
+
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity httpSecurity, MvcRequestMatcher.Builder mvc) throws Exception {
         HttpSecurity security = httpSecurity.authorizeHttpRequests(registry -> {
-            ignoreUrlsConfig.getUrls().forEach(u -> registry.requestMatchers(u).permitAll());
+//            registry.requestMatchers(mvc("/druid/**")).permitAll();
+            ignoreUrlsConfig.getUrls().forEach(u -> registry.requestMatchers(mvc.pattern(u)).permitAll());
             registry.requestMatchers(HttpMethod.OPTIONS).permitAll()
                     // 任何请求需要身份认证
                     .anyRequest()

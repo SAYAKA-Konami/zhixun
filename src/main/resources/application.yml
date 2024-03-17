@@ -50,8 +50,8 @@ secure:
       - /swagger-resources/**
       - /v3/api-docs/**
       - /actuator/**
-      - /druid/**
       - /admin/login
       - /admin/register
       - /admin/info
       - /admin/logout
+      - /druid/**

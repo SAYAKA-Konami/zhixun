@@ -1,10 +1,13 @@
 package com.macro.mall.tiny.modules.task.service;
 
 import com.alibaba.excel.EasyExcel;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.macro.mall.tiny.common.exception.ApiException;
 import com.macro.mall.tiny.domain.CustomerDetails;
 import com.macro.mall.tiny.modules.task.dto.CustomerDto;
+import com.macro.mall.tiny.modules.task.dto.GetCustomerByTaskIDDto;
 import com.macro.mall.tiny.modules.task.dto.mapper.CustomerDTOMapper;
 import com.macro.mall.tiny.modules.task.model.Customer;
 import com.macro.mall.tiny.modules.task.mapper.CustomerMapper;
@@ -39,6 +42,8 @@ public class CustomerService extends ServiceImpl<CustomerMapper, Customer> imple
     private CustomerMapper customerMapper;
     @Resource
     private TaskService taskService;
+    @Resource
+    private TaskCustomerService taskCustomerService;
     @Autowired
     private UmsAdminService umsAdminService;
     @Autowired
@@ -87,4 +92,12 @@ public class CustomerService extends ServiceImpl<CustomerMapper, Customer> imple
         return ret;
     }
 
+    public List<CustomerVo> pageByTaskId(GetCustomerByTaskIDDto dto) {
+        List<Long> customerIds = taskCustomerService.getCustomerIdsByTaskID(dto.getTaskID());
+        if (customerIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<Customer> customers = this.listByIds(customerIds);
+        return customers.stream().map(CustomerVoMapper.INSTANCE::customerToCustomerVo).toList();
+    }
 }

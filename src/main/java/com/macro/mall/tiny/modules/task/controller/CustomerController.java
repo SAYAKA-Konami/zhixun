@@ -1,11 +1,14 @@
 package com.macro.mall.tiny.modules.task.controller;
 
 import com.alibaba.excel.EasyExcel;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.macro.mall.tiny.common.api.CommonPage;
 import com.macro.mall.tiny.common.api.CommonResult;
 import com.macro.mall.tiny.common.api.ResultCode;
 import com.macro.mall.tiny.modules.task.dto.CustomerDto;
 import com.macro.mall.tiny.modules.task.dto.ExportDto;
+import com.macro.mall.tiny.modules.task.dto.GetCustomerByTaskIDDto;
+import com.macro.mall.tiny.modules.task.dto.PageRequestDto;
 import com.macro.mall.tiny.modules.task.service.CustomerService;
 import com.macro.mall.tiny.modules.task.vo.CustomerVo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -79,15 +82,26 @@ public class CustomerController {
     @PostMapping("/export")
     @Operation(summary = "导出客户信息")
     public void export(@RequestBody ExportDto exportDto, HttpServletResponse response) throws IOException{
+        // TODO
     }
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "获取客户信息列表")
-    public CommonResult<CommonPage<CustomerVo>> getCustomerList(@RequestParam("pageSize") Integer pageSize,
-                                                                @RequestParam("pageNum") Integer pageNum){
+    public CommonResult<CommonPage<CustomerVo>> getCustomerList(@Validated @RequestBody PageRequestDto pageRequestDto){
+        Integer pageNum = pageRequestDto.getPageNum();
+        Integer pageSize = pageRequestDto.getPageSize();
         List<CustomerVo> ret = customerService.getCustomerList(pageNum, pageSize);
         CommonPage<CustomerVo> build = CommonPage.build(ret, pageNum, pageSize);
         // 根据用户权限获取客户信息列表
         return CommonResult.success(build);
     }
+
+    @PostMapping({"/getByTaskId"})
+    @Operation(summary = "根据任务ID获取客户信息")
+    public CommonResult<CommonPage<CustomerVo>> getCustomersByTaskId(@Validated @RequestBody GetCustomerByTaskIDDto dto){
+        List<CustomerVo> ret = customerService.pageByTaskId(dto);
+        CommonPage<CustomerVo> build = CommonPage.build(ret, dto.getPageNum(), dto.getPageSize());
+        return CommonResult.success(build);
+    }
+
 }
