@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author macro
  * @since 2024-03-17
  */
-public interface TeamService extends IService<Team> {
+public interface TeamService extends IService<Team>, FindBelongUser {
 
 }

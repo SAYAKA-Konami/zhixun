@@ -8,6 +8,7 @@ import com.macro.mall.tiny.modules.task.model.Task;
 import com.macro.mall.tiny.modules.task.mapper.TaskMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.macro.mall.tiny.modules.task.model.TaskCustomer;
+import com.macro.mall.tiny.modules.task.vo.TaskVo;
 import com.macro.mall.tiny.security.util.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,13 @@ public class TaskService extends ServiceImpl<TaskMapper, Task> implements IServi
     private TaskCustomerService taskCustomerService;
 
     @Transactional
-    public void insertTaskAndTaskCustomer(List<Long> customerIds){
+    public void insertTaskAndTaskCustomer(List<Long> customerIds, TaskVo taskVo){
         long currentUserId = SecurityUtils.getCurrentUserId();
         if (currentUserId == AdminUserDetails.ILLEGAL_ID) {
             log.error("Can not get user.");
         }
         Task newTask = TaskDetails.initialTask(currentUserId);
+        newTask.setName(taskVo.getTaskName());
         TaskDetails taskDetails = new TaskDetails(newTask);
         List<TaskCustomer> taskCustomers = taskDetails.buildRelation(customerIds);
         this.save(newTask);

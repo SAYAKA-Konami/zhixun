@@ -1,35 +1,27 @@
 package com.macro.mall.tiny.modules.task.service;
 
 import com.alibaba.excel.EasyExcel;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.macro.mall.tiny.common.exception.ApiException;
-import com.macro.mall.tiny.domain.AdminUserDetails;
 import com.macro.mall.tiny.domain.CustomerDetails;
-import com.macro.mall.tiny.domain.TaskDetails;
 import com.macro.mall.tiny.modules.task.dto.CustomerDto;
 import com.macro.mall.tiny.modules.task.dto.mapper.CustomerDTOMapper;
 import com.macro.mall.tiny.modules.task.model.Customer;
 import com.macro.mall.tiny.modules.task.mapper.CustomerMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.macro.mall.tiny.modules.task.model.Task;
 import com.macro.mall.tiny.modules.task.vo.TaskVo;
-import com.macro.mall.tiny.modules.ums.model.UmsAdmin;
 import com.macro.mall.tiny.modules.ums.model.UmsRole;
+import com.macro.mall.tiny.modules.ums.service.FindBelongUser;
 import com.macro.mall.tiny.modules.ums.service.UmsAdminService;
 import com.macro.mall.tiny.security.util.SecurityUtils;
+import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.javassist.expr.NewArray;
-import org.checkerframework.checker.units.qual.N;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * <p>
@@ -48,6 +40,19 @@ public class CustomerService extends ServiceImpl<CustomerMapper, Customer> imple
     private TaskService taskService;
     @Autowired
     private UmsAdminService umsAdminService;
+    @Autowired
+    private List<FindBelongUser> findBelongUserList;
+
+    private Map<String, FindBelongUser> roleName2FindFunction = new HashMap<>();
+
+    @PostConstruct
+    public void preHandle(){
+        for (FindBelongUser fun : findBelongUserList) {
+            roleName2FindFunction.put(fun.getRoleName(), fun);
+        }
+        // 管理员可以直接查看所有...
+        roleName2FindFunction.put("admin", new FindBelongUser() {});
+    }
 
     public Optional<List<CustomerDto>> parseExcelAndSave(MultipartFile file, TaskVo taskVo){
         List<String> phoneList = new ArrayList<>();
@@ -59,7 +64,7 @@ public class CustomerService extends ServiceImpl<CustomerMapper, Customer> imple
             return Optional.empty();
         }
         List<Long> ids = customerMapper.getIdsByPhoneList(phoneList);
-        taskService.insertTaskAndTaskCustomer(ids);
+        taskService.insertTaskAndTaskCustomer(ids, taskVo);
         return Optional.of(customerDetails.getFailedDataList());
     }
 
@@ -68,10 +73,14 @@ public class CustomerService extends ServiceImpl<CustomerMapper, Customer> imple
         long currentUserId = SecurityUtils.getCurrentUserId();
         List<UmsRole> roleList = umsAdminService.getRoleList(currentUserId);
         if (roleList.isEmpty()) {
+            log.error("用户没有角色! userId: {}", currentUserId);
             throw new ApiException("用户没有角色");
         }
+        UmsRole umsRole = roleList.get(0);
+        String role = umsRole.getName();
 
         // TODO
         return null;
     }
+
 }

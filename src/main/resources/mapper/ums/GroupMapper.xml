@@ -12,4 +12,12 @@
         <result column="update_time" property="updateTime" />
     </resultMap>
 
+    <select id="getFuckableByLeaderId" resultType="com.macro.mall.tiny.modules.ums.model.UmsAdmin">
+        select *
+        from zhixun.ums_admin
+        where group_id in (select id
+                           from `group`
+                           where leader_id = #{leaderId})
+    </select>
+
 </mapper>

@@ -4,6 +4,7 @@ import com.macro.mall.tiny.modules.ums.model.UmsAdmin;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.macro.mall.tiny.modules.ums.vo.UmsUserVo;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -25,5 +26,10 @@ public interface UmsAdminMapper extends BaseMapper<UmsAdmin> {
     List<UmsUserVo> getAllUser(@Param("username") String username,
                                @Param("pageSize") Integer pageSize,
                                  @Param("offsetSize") Integer offsetSize);
+
+    @Select("select username from ums_admin where group_id in (#{groupIds})")
+    List<String> getUserNameByGroupIds(@Param("groupIds") List<Long> groupIds);
+
+
 
 }
