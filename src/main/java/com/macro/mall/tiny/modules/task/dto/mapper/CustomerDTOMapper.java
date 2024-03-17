@@ -25,4 +25,6 @@ public interface CustomerDTOMapper {
     default long defaultBelong(){return -1L;}
 
     default Date createTime(){return new Date();}
+
+    CustomerDto customerToCustomerDto(Customer customer);
 }

@@ -36,6 +36,18 @@
 
     </select>
 
+    <select id="queryByImported" resultType="com.macro.mall.tiny.modules.task.model.Customer">
+        select * from customer
+        <where>
+            <if test="list != null and list.size() > 0">
+                imported_by in
+                <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        limit #{pageSize}, #{offsetSize}
+    </select>
 
 
 </mapper>

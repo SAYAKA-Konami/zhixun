@@ -9,6 +9,8 @@ import com.macro.mall.tiny.modules.task.dto.mapper.CustomerDTOMapper;
 import com.macro.mall.tiny.modules.task.model.Customer;
 import com.macro.mall.tiny.modules.task.mapper.CustomerMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.macro.mall.tiny.modules.task.vo.CustomerVo;
+import com.macro.mall.tiny.modules.task.vo.mapper.CustomerVoMapper;
 import com.macro.mall.tiny.modules.ums.model.UmsRole;
 import com.macro.mall.tiny.modules.ums.service.FindBelongUser;
 import com.macro.mall.tiny.modules.ums.service.UmsAdminService;
@@ -68,7 +70,7 @@ public class CustomerService extends ServiceImpl<CustomerMapper, Customer> imple
     }
 
 
-    public List<CustomerDto> getCustomerList() {
+    public List<CustomerVo> getCustomerList(Integer pageNum, Integer pageSize) {
         long currentUserId = SecurityUtils.getCurrentUserId();
         List<UmsRole> roleList = umsAdminService.getRoleList(currentUserId);
         if (roleList.isEmpty()) {
@@ -77,9 +79,12 @@ public class CustomerService extends ServiceImpl<CustomerMapper, Customer> imple
         }
         UmsRole umsRole = roleList.get(0);
         String role = umsRole.getName();
-
-        // TODO
-        return null;
+        FindBelongUser findBelongUserMethod = roleName2FindFunction.get(role);
+        List<String> userNameList = findBelongUserMethod.findBelongUserName(currentUserId);
+        int offsetSize = (pageNum - 1) * pageSize;
+        List<Customer> customers = customerMapper.queryByImported(userNameList, pageSize, offsetSize);
+        List<CustomerVo> ret = customers.stream().map(CustomerVoMapper.INSTANCE::customerToCustomerVo).toList();
+        return ret;
     }
 
 }

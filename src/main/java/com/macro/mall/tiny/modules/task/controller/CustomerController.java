@@ -83,9 +83,11 @@ public class CustomerController {
 
     @GetMapping("/list")
     @Operation(summary = "获取客户信息列表")
-    public CommonResult<CommonPage<CustomerVo>> getCustomerList(){
-        List<CustomerDto> ret = customerService.getCustomerList();
+    public CommonResult<CommonPage<CustomerVo>> getCustomerList(@RequestParam("pageSize") Integer pageSize,
+                                                                @RequestParam("pageNum") Integer pageNum){
+        List<CustomerVo> ret = customerService.getCustomerList(pageNum, pageSize);
+        CommonPage<CustomerVo> build = CommonPage.build(ret, pageNum, pageSize);
         // 根据用户权限获取客户信息列表
-        return CommonResult.success(null);
+        return CommonResult.success(build);
     }
 }

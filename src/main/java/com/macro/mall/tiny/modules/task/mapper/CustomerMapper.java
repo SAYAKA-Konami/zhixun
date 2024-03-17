@@ -22,4 +22,9 @@ public interface CustomerMapper extends BaseMapper<Customer> {
 
 
     List<Long> getIdsByPhoneList(List<String> phoneList);
+
+    List<Customer> queryByImported(@Param("list") List<String> userNameList,
+                                   @Param("pageSize") Integer pageSize,
+                                   @Param("offsetSize") Integer offsetSize);
+
 }
