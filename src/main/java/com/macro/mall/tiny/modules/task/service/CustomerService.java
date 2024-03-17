@@ -9,7 +9,6 @@ import com.macro.mall.tiny.modules.task.dto.mapper.CustomerDTOMapper;
 import com.macro.mall.tiny.modules.task.model.Customer;
 import com.macro.mall.tiny.modules.task.mapper.CustomerMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.macro.mall.tiny.modules.task.vo.TaskVo;
 import com.macro.mall.tiny.modules.ums.model.UmsRole;
 import com.macro.mall.tiny.modules.ums.service.FindBelongUser;
 import com.macro.mall.tiny.modules.ums.service.UmsAdminService;
@@ -54,7 +53,7 @@ public class CustomerService extends ServiceImpl<CustomerMapper, Customer> imple
         roleName2FindFunction.put("admin", new FindBelongUser() {});
     }
 
-    public Optional<List<CustomerDto>> parseExcelAndSave(MultipartFile file, TaskVo taskVo){
+    public Optional<List<CustomerDto>> parseExcelAndSave(MultipartFile file, String taskName){
         List<String> phoneList = new ArrayList<>();
         var customerDetails = new CustomerDetails(customerMapper, CustomerDTOMapper.INSTANCE, phoneList);
         try {
@@ -64,7 +63,7 @@ public class CustomerService extends ServiceImpl<CustomerMapper, Customer> imple
             return Optional.empty();
         }
         List<Long> ids = customerMapper.getIdsByPhoneList(phoneList);
-        taskService.insertTaskAndTaskCustomer(ids, taskVo);
+        taskService.insertTaskAndTaskCustomer(ids, taskName);
         return Optional.of(customerDetails.getFailedDataList());
     }
 

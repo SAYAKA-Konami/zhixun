@@ -8,7 +8,6 @@ import com.macro.mall.tiny.modules.task.dto.CustomerDto;
 import com.macro.mall.tiny.modules.task.dto.ExportDto;
 import com.macro.mall.tiny.modules.task.service.CustomerService;
 import com.macro.mall.tiny.modules.task.vo.CustomerVo;
-import com.macro.mall.tiny.modules.task.vo.TaskVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -41,9 +40,9 @@ public class CustomerController {
 
     @PostMapping("/upload")
     @Operation(summary = "上传客户信息")
-    public CommonResult<List<CustomerDto>> uploadCustomerInfo(@Validated @RequestBody TaskVo taskVo,
+    public CommonResult<List<CustomerDto>> uploadCustomerInfo(@Validated @RequestParam  String taskName,
                                                               @RequestParam MultipartFile file){
-        Optional<List<CustomerDto>> failedRet = customerService.parseExcelAndSave(file, taskVo);
+        Optional<List<CustomerDto>> failedRet = customerService.parseExcelAndSave(file, taskName);
         if (failedRet.isEmpty()) {
             return CommonResult.failed(CommonResult.SERVER_ERROR);
         }

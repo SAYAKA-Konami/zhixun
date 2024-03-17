@@ -7,14 +7,22 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.Date;
+
 @Mapper
 public interface CustomerDTOMapper {
     CustomerDTOMapper INSTANCE = Mappers.getMapper(CustomerDTOMapper.class);
 
     @Mapping(target = "importedBy", expression = "java(getImportedBy())")
+    @Mapping(target = "belong", expression = "java(defaultBelong())")
+    @Mapping(target = "createTime", expression = "java(createTime())")
     Customer customerDtoToCustomer(CustomerDto customerDto);
 
     default String getImportedBy(){
         return SecurityUtils.getCurrentUserName();
     }
+
+    default long defaultBelong(){return -1L;}
+
+    default Date createTime(){return new Date();}
 }

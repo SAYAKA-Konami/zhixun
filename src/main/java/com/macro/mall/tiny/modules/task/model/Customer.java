@@ -10,7 +10,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author macro
@@ -40,7 +40,7 @@ public class Customer implements Serializable {
     @Schema(description = "记录是谁导入的")
     private String importedBy;
 
-    @Schema(description = "可能的归属有：客户公海、单个客服")
+    @Schema(description = "可能的归属有：客户公海 -1、单个客服")
     private Long belong;
 
     private String category;
